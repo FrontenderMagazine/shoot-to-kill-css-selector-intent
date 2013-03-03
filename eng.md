@@ -1,12 +1,11 @@
 Shoot to kill; CSS selector intent
-================================================================================
+==============================================================================
 
 One type of CSS in particular makes me cringe every time I see it; poor selector
 intent. Poor selector intent means carpet bombed selectors whose key selector
-has way too broad a reach; a selector like `.header ul{}` as opposed to one
-like `.main-nav{}`; `.widget h2{}` instead of `.widget-title`;
-`article > p:first-child{}` as opposed to `.intro{}`. Selectors whose intent
-isn’t specific enough.
+has way too broad a reach; a selector like `.header ul{}` as opposed to one like
+`.main-nav{}`; `.widget h2{}` instead of `.widget-title`; `article > p:first-
+child{}` as opposed to `.intro{}`. Selectors whose intent isn’t specific enough.
 
 It’s worth noting that *selector intent* is something I completely made up at
 some point today; if you think there’s a better name then please let me know!
@@ -34,9 +33,9 @@ is a very important thing in the world of CSS as *browsers read selectors
 **right to left***. This means the key selector is the last one before the
 opening `{`, for example:
 
-    .header ul      { /* ‘ul’ is the key selector */ }
-    .ul li a        { /* ‘a’ is the key selector */ }
-    p:last-child    { /* ‘:last-child’ is the key selector */ }
+	.header ul      { /* ‘ul’ is the key selector */ }
+	.ul li a        { /* ‘a’ is the key selector */ }
+	p:last-child    { /* ‘:last-child’ is the key selector */ }
 
 As I discuss in [Writing efficient CSS selectors][1], the key selector plays
 a big part in CSS efficiency, so it’s worth bearing that in mind, but where
@@ -56,28 +55,28 @@ object in your content area it doesn’t mean it always will be.
 Let’s keep looking at the `.header ul{}` example. Let’s assume our markup is
 thus, as we’re using [the nav abstraction][2]:
 
-    <div class=header>
-    
-        <ul class=nav>
-            [links]
-        </ul>
-    
-    </div>
+	<div class=header>
+	
+		<ul class=nav>
+			[links]
+		</ul>
+	
+	</div>
 
 We could select this in one of several ways:
 
-    .header ul{
-        [main nav styles]
-    }
+	.header ul{
+		[main nav styles]
+	}
 
 This is bad because as soon as we add *any* other `ul` to our header it will
 look like our main nav. This is dangerous but thankfully easily avoidable.
 
 Secondly we could use:
 
-    .header .nav{
-        [main nav styles]
-    }
+	.header .nav{
+		[main nav styles]
+	}
 
 This is *marginally* better than the `.header ul` example, but barely so. We
 can now safely add another `ul` without risk, but we can’t add anything else
@@ -87,17 +86,17 @@ be a nightmare!
 Finally, our best solution would be to add a second class to the `ul`;
 a class of `.main-nav`:
 
-    <div class=header>
-    
-        <ul class="nav main-nav">
-            [links]
-        </ul>
-    
-    </div>
-    
-    .main-nav{
-        [main nav styles]
-    }
+	<div class=header>
+	
+		<ul class="nav main-nav">
+			[links]
+		</ul>
+	
+	</div>
+	
+	.main-nav{
+		[main nav styles]
+	}
 
 This is good selector intent; we are selecting this element now for *exactly*
 the right reasons, not coincidental/circumstantial ones. Now we can add
@@ -127,46 +126,47 @@ the previous ones. Uh oh. My previous selector was far too far reaching,
 I was now having to undo a blanket style I’d set on *every* table in the
 `#content` `div`. If I’d had a better selector intent then instead of:
 
-    #content table{
-        [foo styles]
-    }
-    #content .bar{
-        [undoing foo styles]
-        [bar styles]
-    }
+	#content table{
+		[foo styles]
+	}
+	#content .bar{
+		[undoing foo styles]
+		[bar styles]
+	}
 
 I should/would have had:
 
-    .foo{
-        [foo styles]
-    }
-    .bar{
-        [bar styles]
-    }
+	.foo{
+		[foo styles]
+	}
+	.bar{
+		[bar styles]
+	}
 
 And a *lot* less headaches. By thinking ahead and having a lot more considered
 selector intent then I would have had a much easier time…
 
-## Exceptions
+
+## Exceptions ##
 
 Of course there are *always* exceptions. It’s perfectly reasonable to have
 selectors like `.main-nav > li` where your key selector *is* a type selector.
 It also makes perfect sense to target every `a` inside something like this:
 
-    html{
-        color:#333;
-        background-color:#fff;
-    }
+	html{
+		color:#333;
+		background-color:#fff;
+	}
 
-    /* Inverted colour scheme for promotional items. */
-    .promo{
-        color:#fff;
-        background-color:#333;
-    }
-        .promo a{
-            color:#fff;
-            text-decoration:underline;
-        }
+	/* Inverted colour scheme for promotional items. */
+	.promo{
+		color:#fff;
+		background-color:#333;
+	}
+	.promo a{
+		color:#fff;
+		text-decoration:underline;
+	}
 
 That is a reasonably sensible far-reaching selector where it does make sense
 to style every `a` in a pretty carpet bombed manner.
@@ -179,28 +179,28 @@ intent is accurate and targeted.
 
 Think more carefully about why you want to target something and pick a more
 explicit and sensible selector; refine your selector intent. Do you mean:
-    
-    .header em{}
+	
+	.header em{}
 
 or do you really mean:
 
-    .tagline{}
+	.tagline{}
 
 Do you want:
 
-    .footer p{}
+	.footer p{}
 
 or do you really want:
 
-    .copyright{}
+	.copyright{}
 
 Is it wise to select:
 
-    .sidebar form{}
+	.sidebar form{}
 
 or would a safer bet be:
 
-    .search-form{}
+	.search-form{}
 
 Consider your CSS selectors’ intent; are you being specific enough? Are your
 selectors matching things for the right reasons, or is it just happy
@@ -215,6 +215,6 @@ the [*depth of applicability*][5]…
 
 [1]: http://csswizardry.com/2011/09/writing-efficient-css-selectors/ "Writing efficient CSS selectors"
 [2]: http://csswizardry.com/2011/09/the-nav-abstraction/ "The ‘nav’ abstraction"
-[3]: http://csswizardry.com/2011/09/when-using-ids-can-be-a-pain-in-the-class/ "When using IDs can be a pain in the class…"
+[3]: http://csswizardry.com/2011/09/when-using-ids-can-be-a-pain-in-the-class/ "When using IDs can be a pain in the class.."
 [4]: https://twitter.com/snookca "@snookca"
 [5]: http://smacss.com/book/applicability "Depth of Applicability"
